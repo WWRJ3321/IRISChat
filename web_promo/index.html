@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>虹月 AI Chat · 你的专属 AI 对话空间</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810; --bg2:#0d1117;
+  --text:#f0f6fc; --text2:#8b949e;
+  --accent:#14E2CE; --accent2:#0fb8a8;
+  --violet:#a78bfa;
+  --glow:rgba(20,226,206,.28);
+  --card:rgba(13,17,23,.45);
+  --border:rgba(20,226,206,.16);
+  --grid:rgba(20,226,206,.04);
+}
+[data-theme="light"]{
+  --bg:#f6f8fa; --bg2:#ffffff;
+  --text:#1f2328; --text2:#656d76;
+  --accent:#0ea5a0; --accent2:#0d9488;
+  --glow:rgba(14,165,160,.18);
+  --card:rgba(255,255,255,.6);
+  --border:rgba(14,165,160,.22);
+  --grid:rgba(14,165,160,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;opacity:.5;filter:blur(8px)}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(20,226,206,.3),transparent 70%);animation:d1 20s ease-in-out infinite}
+.orb2{width:450px;height:450px;background:radial-gradient(circle,rgba(167,139,250,.25),transparent 70%);animation:d2 25s ease-in-out infinite}
+.orb3{width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.28),transparent 70%);animation:d3 18s ease-in-out infinite}
+@keyframes d1{0%,100%{left:5%;top:5%}50%{left:30%;top:22%}}
+@keyframes d2{0%,100%{right:8%;bottom:12%}50%{right:38%;bottom:30%}}
+@keyframes d3{0%,100%{left:22%;top:62%}50%{left:52%;top:34%}}
+.wrap{position:relative;z-index:10;max-width:960px;margin:0 auto;padding:0 24px}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;background:rgba(5,8,16,.28);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid var(--border)}
+[data-theme="light"] nav{background:rgba(255,255,255,.5)}
+.nav-c{max-width:960px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05em}
+.logo{width:34px;height:34px;border-radius:10px;object-fit:contain}
+.hero-logo{width:112px;height:112px;margin-bottom:22px;filter:drop-shadow(0 8px 28px var(--glow))}
+.theme-toggle{width:38px;height:38px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:1.05em;transition:.2s}
+.theme-toggle:hover{border-color:var(--accent)}
+/* hero */
+.hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 0 40px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--card);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:100px;font-size:.8em;color:var(--text2);margin-bottom:24px}
+.hero h1{font-size:clamp(2.8rem,8vw,5rem);font-weight:800;letter-spacing:-.04em;margin-bottom:16px;background:linear-gradient(135deg,var(--text) 20%,var(--accent) 70%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15em;color:var(--text2);margin-bottom:32px;max-width:560px;line-height:1.7}
+.cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{padding:13px 28px;border-radius:100px;font-size:.95em;font-weight:600;text-decoration:none;transition:.25s;display:inline-flex;align-items:center;gap:8px;border:1px solid transparent}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06322d;box-shadow:0 6px 24px var(--glow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px var(--glow)}
+.btn-ghost{background:var(--card);backdrop-filter:blur(16px);border-color:var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+/* phone mockup */
+.mock{margin:48px auto 0;width:270px;height:auto;border-radius:34px;padding:10px;background:var(--card);backdrop-filter:blur(22px) saturate(1.6);border:1px solid var(--border);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.mock-screen{border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#0d1117,#131a2e);padding:16px 14px}
+[data-theme="light"] .mock-screen{background:linear-gradient(160deg,#eef2f6,#e4ecf2)}
+.mock-title{text-align:center;font-family:'JetBrains Mono';font-size:1.2em;font-weight:600;color:var(--accent);margin:6px 0 14px}
+.bubble{padding:10px 14px;border-radius:16px;font-size:.8em;line-height:1.5;margin-bottom:9px;max-width:82%}
+.bubble.ai{background:rgba(20,226,206,.14);border:1px solid var(--border);border-bottom-left-radius:5px}
+.bubble.me{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06322d;margin-left:auto;border-bottom-right-radius:5px}
+.bubble .who{font-size:.85em;opacity:.7;margin-bottom:2px;font-weight:600}
+/* sections */
+section{padding:56px 0}
+.sec-head{text-align:center;margin-bottom:40px}
+.sec-label{font-size:.78em;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;font-weight:600}
+.sec-title{font-size:2em;font-weight:700;letter-spacing:-.03em;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.feat{background:var(--card);backdrop-filter:blur(20px) saturate(1.5);border:1px solid var(--border);border-radius:18px;padding:22px;transition:.3s}
+.feat:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 14px 40px var(--glow)}
+.feat-ic{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--violet));display:flex;align-items:center;justify-content:center;font-size:1.3em;margin-bottom:14px;box-shadow:0 4px 14px var(--glow)}
+.feat h3{font-size:1.08em;font-weight:600;margin-bottom:7px}
+.feat p{font-size:.88em;color:var(--text2);line-height:1.6}
+/* highlight group chat */
+.spot{background:var(--card);backdrop-filter:blur(22px);border:1px solid var(--border);border-radius:22px;padding:36px;display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center}
+.spot h2{font-size:1.7em;font-weight:700;margin-bottom:14px;letter-spacing:-.02em}
+.spot p{color:var(--text2);line-height:1.75;font-size:.95em;margin-bottom:10px}
+.chip{display:inline-block;padding:5px 12px;margin:3px 4px 0 0;background:rgba(20,226,206,.12);border:1px solid var(--border);border-radius:100px;font-size:.78em;color:var(--accent)}
+.chat-demo{background:linear-gradient(160deg,rgba(13,17,23,.6),rgba(19,26,46,.6));border-radius:16px;padding:16px;border:1px solid var(--border)}
+/* footer */
+footer{border-top:1px solid var(--border);padding:40px 0 44px;text-align:center;color:var(--text2);font-size:.85em;margin-top:40px;background:rgba(5,8,16,.3);backdrop-filter:blur(18px)}
+[data-theme="light"] footer{background:rgba(255,255,255,.45)}
+.footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:14px}
+.footer-links a{color:var(--text2);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:var(--accent)}
+.powered{color:var(--accent);font-weight:500;margin-top:8px}
+.fade{animation:fu .7s ease forwards;opacity:0}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}
+@media(max-width:768px){.spot{grid-template-columns:1fr;padding:24px}.hero h1{font-size:2.6rem}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+
+<nav><div class="nav-c">
+  <div class="brand">
+    <img class="logo" src="logo.png" alt="虹月 AI Chat">
+    <span>虹月 AI Chat</span>
+  </div>
+  <button class="theme-toggle" id="tt" aria-label="theme">🌙</button>
+</div></nav>
+
+<div class="wrap">
+  <section class="hero">
+    <img class="hero-logo fade" src="logo.png" alt="虹月 AI Chat 图标">
+    <div class="hero-badge fade"><span>✨</span><span>开源 · 本地优先 · 多 AI 群聊</span></div>
+    <h1 class="fade d1">虹月 AI Chat</h1>
+    <p class="fade d2">一个精致、私密、可完全自定义的 AI 对话应用。青色主题、毛玻璃质感，兼容任意 OpenAI 风格接口——你的密钥只留在你自己的设备上。</p>
+    <div class="cta fade d3">
+      <a href="https://github.com/WWRJ3321/IRISChat" class="btn btn-primary" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub 源码
+      </a>
+      <a href="#features" class="btn btn-ghost">了解功能 →</a>
+    </div>
+
+    <div class="mock fade d3">
+      <div class="mock-screen">
+        <div class="mock-title">虹月群聊</div>
+        <div class="bubble me">帮我想一个周末短途露营的主意</div>
+        <div class="bubble ai"><div class="who">🌙 虹月</div>山谷营地，白天徒步溪流，晚上看星。装备我列个清单？</div>
+        <div class="bubble ai"><div class="who">💠 通用助手</div>补充一句：查一下当地天气和防火令，别扑空。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="sec-head fade">
+      <div class="sec-label">Features</div>
+      <h2 class="sec-title">为对话而生的每一处细节</h2>
+    </div>
+    <div class="grid">
+      <div class="feat fade"><div class="feat-ic">👥</div><h3>多 AI 群聊</h3><p>多个角色进同一个群，各自以独立人格发言、互相接话，而不是一个 AI 的多个分身。</p></div>
+      <div class="feat fade"><div class="feat-ic">🎭</div><h3>角色卡</h3><p>自定义人设、头像、采样参数与专属模型，每个角色都是独立的个体。</p></div>
+      <div class="feat fade"><div class="feat-ic">🧠</div><h3>思考模式</h3><p>一键开关推理深度（1-3 档），让模型该深思时深思，该干脆时干脆。</p></div>
+      <div class="feat fade"><div class="feat-ic">🖼️</div><h3>图片视觉</h3><p>发图给支持 Vision 的模型，看图说话、识别内容，多模态开箱即用。</p></div>
+      <div class="feat fade"><div class="feat-ic">🎙️</div><h3>语音输入</h3><p>说话即输入，轻量语音识别把你的话转成文字直接发送。</p></div>
+      <div class="feat fade"><div class="feat-ic">🗂️</div><h3>上下文摘要</h3><p>长对话自动压缩早期内容为摘要，省 token 又不丢脉络。</p></div>
+      <div class="feat fade"><div class="feat-ic">🌿</div><h3>消息分支</h3><p>重新生成 / 编辑保留历史版本，1/N 页码自由切换不同回答。</p></div>
+      <div class="feat fade"><div class="feat-ic">🎨</div><h3>主题定制</h3><p>青色主色、毛玻璃、OLED 纯黑、自定义壁纸，界面随心。</p></div>
+      <div class="feat fade"><div class="feat-ic">🔒</div><h3>本地优先</h3><p>会话与密钥全部保存在本机，不上传第三方，隐私由你掌控。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="spot fade">
+      <div>
+        <h2>真正的「群聊」，不是回声</h2>
+        <p>虹月用视角化上下文重塑了多 AI 对话：每个成员看到的历史里，只有自己说的话是「自己」，别人的话都带名字前缀。它们清楚地知道群里有谁、谁在说话，于是各说各的、彼此接话。</p>
+        <p>被点名时其他成员会安静等待，轮到自己才发言——像一场真实的多人讨论。</p>
+        <div>
+          <span class="chip">视角化上下文</span>
+          <span class="chip">独立人格提示词</span>
+          <span class="chip">按顺序 / 随机发言</span>
+          <span class="chip">可配置轮数</span>
+        </div>
+      </div>
+      <div class="chat-demo">
+        <div class="bubble me" style="margin-bottom:9px">这个方案谁来评估下风险？让 通用助手 说</div>
+        <div class="bubble ai"><div class="who">💠 通用助手</div>主要风险是时间预算：三处并行会挤占测试窗口，建议砍掉一个。</div>
+        <div class="bubble ai"><div class="who">🌙 虹月</div>同意。我补一句——先跑最不确定的那块，早暴露早调整。</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head fade">
+      <div class="sec-label">Open Source</div>
+      <h2 class="sec-title">开源，欢迎共建</h2>
+    </div>
+    <div style="text-align:center" class="fade">
+      <p style="color:var(--text2);line-height:1.8;max-width:600px;margin:0 auto 24px">用 Flutter 打造，跨平台、纯本地。代码完全开放，欢迎 Star、Issue 与 PR。</p>
+      <a href="https://github.com/WWRJ3321/IRISChat" class="btn btn-primary" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/WWRJ3321/IRISChat" target="_blank" rel="noopener">GitHub</a>
+    <a href="#features">功能</a>
+    <a href="https://github.com/WWRJ3321/IRISChat/releases" target="_blank" rel="noopener">下载</a>
+  </div>
+  <div>虹月 AI Chat · Made by WWRJ</div>
+  <div class="powered">Powered by IRIS Selene 🌙</div>
+</footer>
+
+<script>
+const tt=document.getElementById('tt');
+const saved=localStorage.getItem('theme');
+if(saved==='light'){document.documentElement.setAttribute('data-theme','light');tt.textContent='☀️';}
+tt.onclick=()=>{
+  const light=document.documentElement.getAttribute('data-theme')==='light';
+  if(light){document.documentElement.removeAttribute('data-theme');tt.textContent='🌙';localStorage.setItem('theme','dark');}
+  else{document.documentElement.setAttribute('data-theme','light');tt.textContent='☀️';localStorage.setItem('theme','light');}
+};
+// reveal on scroll
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running';io.unobserve(e.target);}})},{threshold:.1});
+document.querySelectorAll('.fade').forEach(el=>{el.style.animationPlayState='paused';io.observe(el);});
+</script>
+</body>
+</html>

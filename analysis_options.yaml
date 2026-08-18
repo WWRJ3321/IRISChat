@@ -1,0 +1,22 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    avoid_print: true
+    prefer_single_quotes: true
+
+analyzer:
+  errors:
+    # 允许 withValues 等新 API 在旧 SDK 上的提示
+    deprecated_member_use: ignore
+  exclude:
+    - "**/*.g.dart"
+    - "build/**"
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**

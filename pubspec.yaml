@@ -1,0 +1,62 @@
+name: ai_chat
+description: A feature-rich, local-first AI chat app with a cyan theme and glassmorphism.
+publish_to: 'none'
+version: 1.3.4+9
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # State management
+  flutter_riverpod: ^2.5.1
+
+  # Networking + streaming (SSE)
+  dio: ^5.4.3+1
+
+  # Local storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.3
+
+  # 图片选择（角色卡头像 / 背景壁纸）
+  image_picker: ^1.1.2
+
+  # 语音转文字（轻量 STT）
+  speech_to_text: ^7.0.0
+
+  # Android 运行时权限（语音需要麦克风）
+  permission_handler: ^11.3.1
+
+  # Markdown + code highlight
+  flutter_markdown: ^0.7.1
+  flutter_highlight: ^0.7.0
+  markdown: ^7.2.2
+
+  # Utils
+  uuid: ^4.4.0
+  intl: ^0.20.2
+
+  # UI helpers
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9
+
+# path_provider_android 2.3.x 引入 jni 依赖，需要 CMake/NDK 原生编译，
+# 在受限构建环境下不可用。锁定到纯 Java 实现的 2.2.x。
+dependency_overrides:
+  path_provider_android: 2.2.17
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
