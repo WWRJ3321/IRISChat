@@ -56,6 +56,10 @@ flutter build apk --release
 
 欢迎 Star、Issue 与 PR。提交前请确保代码能通过 `flutter analyze`。
 
+## 公告
+
+IRIS Chat已经停止更新
+
 ## 📄 许可证
 
 本项目基于 [GNU General Public License v3.0](LICENSE) 开源。
